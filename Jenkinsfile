@@ -1,41 +1,34 @@
 pipeline {
     agent any
-
     environment {
         DOCKER_IMAGE = 'pathfinding-visualizer'
     }
-
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
-
         stage('Install Dependencies') {
             steps {
                 bat 'npm ci'
             }
         }
-
         stage('Lint') {
             steps {
                 bat 'npm run lint'
             }
         }
-
         stage('Build') {
             steps {
                 bat 'npm run build'
             }
         }
-
         stage('Docker Build') {
             steps {
                 bat 'docker build -t %DOCKER_IMAGE% .'
             }
         }
-
         stage('Deploy') {
             steps {
                 bat '''
@@ -46,7 +39,6 @@ pipeline {
             }
         }
     }
-
     post {
         always {
             cleanWs()
